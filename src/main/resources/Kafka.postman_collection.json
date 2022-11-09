@@ -1,0 +1,45 @@
+{
+	"info": {
+		"_postman_id": "4ec432e7-80c9-413f-ad89-a9f8e3e8b14d",
+		"name": "Kafka",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24234146"
+	},
+	"item": [
+		{
+			"name": "Basic",
+			"item": [
+				{
+					"name": "Basic",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8089/basic/send-message?message=hola!&topic=test-topic",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8089",
+							"path": [
+								"basic",
+								"send-message"
+							],
+							"query": [
+								{
+									"key": "message",
+									"value": "hola!"
+								},
+								{
+									"key": "topic",
+									"value": "test-topic"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

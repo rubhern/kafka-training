@@ -1,6 +1,7 @@
 package com.kafka.Kafka.training.basic;
 
 
+import com.kafka.Kafka.training.Utils;
 import com.kafka.Kafka.training.config.KafkaApplicationProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class BasicService {
     KafkaApplicationProperties properties;
 
     public void sendMessage(String message, String topic) {
-        ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(topic, message);
+        var kafkaRecord = Utils.createRecord(message, topic, null);
+        ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(kafkaRecord);
         future.addCallback(new ListenableFutureCallback<>() {
             @Override
             public void onSuccess(SendResult<String, String> result) {
@@ -43,15 +45,10 @@ public class BasicService {
 
     @KafkaListener(topics = "test-topic", groupId = "test-training")
     public void listenTest(String message) {
-        log.info("Received Message in group {}: {}", properties.getGroupId(), message);
+        log.info("Received Message in test-topic group {}: {}", properties.getGroupId(), message);
     }
 
-    @KafkaListener(topics = "another-topic", groupId = "test-training")
-    public void listenAnother(String message) {
-        log.info("Received Message in group {}: {}", properties.getGroupId(), message);
-    }
-
-    @KafkaListener(topics = "test-topic")
+    @KafkaListener(topics = "test-topic-headers")
     public void listenWithHeaders(
             @Payload String message,
             @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {

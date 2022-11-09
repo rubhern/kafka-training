@@ -20,11 +20,11 @@ public class BasicController {
     @Autowired
     BasicService basicService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/test")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/send-message")
     public ResponseEntity<String> test(@RequestParam String message,
-                                       @RequestParam @NotNull @Pattern(regexp = "^test-topic|another-topic$",
-                                               message = "Not valid topic. Values allowed: test-topic|another-topic") String topic) {
+                                       @RequestParam @NotNull @Pattern(regexp = "^test-topic|paradigma-topic|test-topic-headers$",
+                                               message = "Not valid topic. Values allowed: test-topic|paradigma-topic|test-topic-headers") String topic) {
         basicService.sendMessage(message, topic);
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok("¡Mensaje enviado!");
     }
 }
