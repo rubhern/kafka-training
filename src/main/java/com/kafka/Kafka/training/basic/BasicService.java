@@ -12,7 +12,6 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
 @Service
@@ -27,7 +26,7 @@ public class BasicService {
 
     public void sendMessage(String message, String topic) {
         var kafkaRecord = Utils.createRecord(message, topic, null);
-        ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(kafkaRecord);
+        var future = kafkaTemplate.send(kafkaRecord);
         future.addCallback(new ListenableFutureCallback<>() {
             @Override
             public void onSuccess(SendResult<String, String> result) {
