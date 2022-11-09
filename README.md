@@ -25,8 +25,7 @@ Los pasos para comenzar a trabajar en local son los siguientes:
 
 ## Variables de entorno
 ``
-kafka.groupId=test-training
-kafka.server=localhost:9092,localhost:9101
+kafka.groupId=test-training;kafka.server=localhost:9092,localhost:9101
 ``
 
 ## Clases configuracion proyecto
