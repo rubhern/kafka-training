@@ -1,4 +1,4 @@
-package com.kafka.Kafka.training.config;
+package com.kafka.Kafka.training.shared.config;
 
 import lombok.Getter;
 import lombok.Setter;

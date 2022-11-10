@@ -1,4 +1,4 @@
-package com.kafka.Kafka.training.config;
+package com.kafka.Kafka.training.shared.config;
 
 import lombok.AllArgsConstructor;
 import org.apache.kafka.clients.admin.AdminClientConfig;

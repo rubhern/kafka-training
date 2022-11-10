@@ -8,4 +8,9 @@ public class Utils {
         return new ProducerRecord<>(topic, key, message);
 
     }
+
+    public static ProducerRecord<String, Object> createRecord(final Object message, final String topic, final String key) {
+        return new ProducerRecord<>(topic, key, message);
+
+    }
 }

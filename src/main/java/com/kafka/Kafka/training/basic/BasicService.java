@@ -2,7 +2,7 @@ package com.kafka.Kafka.training.basic;
 
 
 import com.kafka.Kafka.training.Utils;
-import com.kafka.Kafka.training.config.KafkaApplicationProperties;
+import com.kafka.Kafka.training.shared.config.KafkaApplicationProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;

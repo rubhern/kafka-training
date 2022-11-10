@@ -1,4 +1,4 @@
-package com.kafka.Kafka.training.config;
+package com.kafka.Kafka.training.shared.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

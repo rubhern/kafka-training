@@ -1,5 +1,6 @@
-package com.kafka.Kafka.training.config;
+package com.kafka.Kafka.training.basic.config;
 
+import com.kafka.Kafka.training.shared.config.KafkaApplicationProperties;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class KafkaConsumerConfig {
     @Autowired
     private KafkaApplicationProperties properties;
 
-    @Bean
+    @Bean("consumerFactory")
     public ConsumerFactory<String, String> consumerFactory() {
         var props = new HashMap<String, Object>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, properties.getServer());
@@ -29,18 +30,10 @@ public class KafkaConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(props);
     }
 
-    @Bean
+    @Bean("kafkaListenerContainerFactory")
     public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
         var factory = new ConcurrentKafkaListenerContainerFactory<String, String>();
         factory.setConsumerFactory(consumerFactory());
-        return factory;
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> filterKafkaListenerContainerFactory() {
-        var factory = new ConcurrentKafkaListenerContainerFactory<String, String>();
-        factory.setConsumerFactory(consumerFactory());
-        factory.setRecordFilterStrategy(r -> !r.value().contains("paradigma"));
         return factory;
     }
 }
