@@ -64,3 +64,10 @@ Lee mensajes filtrados
 ## Kafka custom messages
 
 Produce y lee mensajes de objetos Java creados por nosotros
+
+## Kafka schema registry
+
+Creamos un schema para un topic desde la consola de confluent entrando en el topic y seleccionando la pestaña schema
+Añadimos en resources -> avro el esquema y con el plugin de maven nos autogenera la clase POJO del esquema que usaremos en el productor
+y consumidor
+
