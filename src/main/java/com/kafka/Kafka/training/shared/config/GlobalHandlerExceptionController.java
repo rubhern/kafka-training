@@ -1,6 +1,7 @@
 package com.kafka.Kafka.training.shared.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.errors.SerializationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -40,6 +41,15 @@ public class GlobalHandlerExceptionController {
                 .stream().map(ObjectError::getDefaultMessage).collect(Collectors.joining(", "));
         log.error("BindException: {}", errorLog);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = {
+            SerializationException.class
+    })
+    public ResponseEntity<String> handleSerializationException(final Exception exception) {
+        log.error("GeneralException: {}", exception.getCause().getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getCause().getMessage());
     }
 
     @ResponseBody

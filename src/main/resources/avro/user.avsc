@@ -1,0 +1,9 @@
+{
+  "namespace": "com.kafka.schema",
+  "type": "record",
+  "name": "UserSchemaRegistryDto",
+  "fields": [
+    {"name": "name", "type": "string"},
+    {"name": "surname", "type": "string"}
+  ]
+}

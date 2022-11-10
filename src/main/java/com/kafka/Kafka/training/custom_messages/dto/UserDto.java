@@ -1,4 +1,4 @@
-package com.kafka.Kafka.training.custom_messages;
+package com.kafka.Kafka.training.custom_messages.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
