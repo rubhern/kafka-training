@@ -1,81 +1,99 @@
 package com.kafka.Kafka.training.streams.testContainer;
 
 import com.kafka.Kafka.training.KafkaTrainingApplication;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.testcontainers.shaded.org.hamcrest.MatcherAssert.assertThat;
 import static org.testcontainers.shaded.org.hamcrest.Matchers.containsString;
 
-@RunWith(SpringRunner.class)
-@Import(com.kafka.Kafka.training.streams.testContainer.KafkaTestContainersLiveTest.KafkaTestContainersConfiguration.class)
-@SpringBootTest(classes = KafkaTrainingApplication.class)
-@DirtiesContext
+@Testcontainers
+@Import(KafkaTestContainersLiveTest.KafkaTestContainersConfiguration.class)
+@SpringBootTest(classes = KafkaTrainingApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Slf4j
 public class KafkaTestContainersLiveTest {
 
-    @ClassRule
-    public static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3"));
+    @Container
+    private static final KafkaContainer kafka = new KafkaContainer(
+            DockerImageName.parse("confluentinc/cp-kafka:5.4.3"));
 
     @Autowired
-    public KafkaTemplate<String, String> template;
+    public KafkaTemplate<String, String> testContainerKafkaTemplate;
 
-    @Autowired
-    private KafkaConsumer consumer;
+    private CountDownLatch latch = new CountDownLatch(1);
 
-    @Autowired
-    private KafkaProducer producer;
+    private String payload;
 
-    @Value("${test.topic}")
-    private String topic;
+    @KafkaListener(topics = "testcontainers-topic")
+    public void receive(ConsumerRecord<?, ?> consumerRecord) {
+        log.info("received payload='{}'", consumerRecord.toString());
+
+        payload = consumerRecord.toString();
+        latch.countDown();
+    }
+
+    public CountDownLatch getLatch() {
+        return latch;
+    }
+
+    public void resetLatch() {
+        latch = new CountDownLatch(1);
+    }
+
+    public String getPayload() {
+        return payload;
+    }
 
     @Before
     public void setup() {
-        consumer.resetLatch();
+        resetLatch();
     }
 
     @Test
     public void givenKafkaDockerContainer_whenSendingWithDefaultTemplate_thenMessageReceived() throws Exception {
         String data = "Sending with default template";
 
-        template.send(topic, data);
+        testContainerKafkaTemplate.send("testcontainers-topic", data);
 
-        boolean messageConsumed = consumer.getLatch().await(10, TimeUnit.SECONDS);
+        boolean messageConsumed = getLatch().await(50, TimeUnit.SECONDS);
         assertTrue(messageConsumed);
-        assertThat(consumer.getPayload(), containsString(data));
+        assertThat(getPayload(), containsString(data));
     }
 
     @Test
     public void givenKafkaDockerContainer_whenSendingWithSimpleProducer_thenMessageReceived() throws Exception {
         String data = "Sending with our own simple KafkaProducer";
 
-        producer.send(topic, data);
+        testContainerKafkaTemplate.send("testcontainers-topic", data);
 
-        boolean messageConsumed = consumer.getLatch().await(10, TimeUnit.SECONDS);
+        boolean messageConsumed = getLatch().await(50, TimeUnit.SECONDS);
         assertTrue(messageConsumed);
-        assertThat(consumer.getPayload(), containsString(data));
+        assertThat(getPayload(), containsString(data));
     }
 
     @TestConfiguration
@@ -116,6 +134,13 @@ public class KafkaTestContainersLiveTest {
         @Bean
         public KafkaTemplate<String, String> testContainerKafkaTemplate() {
             return new KafkaTemplate<>(producerTestContainerFactory());
+        }
+
+        @Bean
+        public KafkaAdmin testContainerKafkaAdmin() {
+            Map<String, Object> configs = new HashMap<>();
+            configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafka.getBootstrapServers());
+            return new KafkaAdmin(configs);
         }
 
     }
