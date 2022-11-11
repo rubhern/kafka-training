@@ -49,7 +49,7 @@ public class KafkaTestContainersLiveTest {
 
     private String payload;
 
-    @KafkaListener(topics = "testcontainers-topic")
+    @KafkaListener(topics = "testcontainers-topic", containerFactory = "consumerTestContainerFactory")
     public void receive(ConsumerRecord<?, ?> consumerRecord) {
         log.info("received payload='{}'", consumerRecord.toString());
 
