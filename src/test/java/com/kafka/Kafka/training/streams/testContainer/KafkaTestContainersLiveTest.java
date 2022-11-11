@@ -85,17 +85,6 @@ public class KafkaTestContainersLiveTest {
         assertThat(getPayload(), containsString(data));
     }
 
-    @Test
-    public void givenKafkaDockerContainer_whenSendingWithSimpleProducer_thenMessageReceived() throws Exception {
-        String data = "Sending with our own simple KafkaProducer";
-
-        testContainerKafkaTemplate.send("testcontainers-topic", data);
-
-        boolean messageConsumed = getLatch().await(50, TimeUnit.SECONDS);
-        assertTrue(messageConsumed);
-        assertThat(getPayload(), containsString(data));
-    }
-
     @TestConfiguration
     static class KafkaTestContainersConfiguration {
 
