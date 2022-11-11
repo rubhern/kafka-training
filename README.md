@@ -11,6 +11,7 @@
 7. [Kafka basic](#kafka-basic)
 8. [Kafka filter](#kafka-filter)
 9. [Kafka custom messages](#kafka-custom-messages)
+10. [Kafka streams](#kafka-streams)
 
 ## Qué es kafka training
 
@@ -59,7 +60,7 @@ Mediante un API Rest enviamos un mensaje y un topic que se publica. Tras esto un
 
 ## Kafka filter
 
-Lee mensajes filtrados
+Lee mensajes filtrados en el topic paradigma-topic
 
 ## Kafka custom messages
 
@@ -71,3 +72,7 @@ Creamos un schema para un topic desde la consola de confluent entrando en el top
 Añadimos en resources -> avro el esquema y con el plugin de maven nos autogenera la clase POJO del esquema que usaremos en el productor
 y consumidor
 
+## Kafka streams
+
+Generamos un stream que lea del topic test-topic, separe las palabras y cuente las que son iguales. La salida la dejará en el topic
+output-stream-topic. Ponemos un endpoint para recuperar el número de palabras actual que hay guardado en la tabla materializada

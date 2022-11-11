@@ -40,6 +40,163 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Filter",
+			"item": [
+				{
+					"name": "Filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8089/basic/send-message?message=paradigma message test!&topic=paradigma-topic",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8089",
+							"path": [
+								"basic",
+								"send-message"
+							],
+							"query": [
+								{
+									"key": "message",
+									"value": "paradigma message test!"
+								},
+								{
+									"key": "topic",
+									"value": "paradigma-topic"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Custom messages",
+			"item": [
+				{
+					"name": "Custom messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8089/custom-messages/send-message?name=Ruben&surname=Hernandez",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8089",
+							"path": [
+								"custom-messages",
+								"send-message"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Ruben"
+								},
+								{
+									"key": "surname",
+									"value": "Hernandez"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Schema registry",
+			"item": [
+				{
+					"name": "Send bad message",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8089/schema-registry/send-message-ko?name=Ruben",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8089",
+							"path": [
+								"schema-registry",
+								"send-message-ko"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Ruben"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send message",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8089/schema-registry/send-message?name=Ruben&surname=Hernandez",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8089",
+							"path": [
+								"schema-registry",
+								"send-message"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Ruben"
+								},
+								{
+									"key": "surname",
+									"value": "Hernandez"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Streams",
+			"item": [
+				{
+					"name": "Count words",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8089/streams/count/paradigma",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8089",
+							"path": [
+								"streams",
+								"count",
+								"paradigma"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
