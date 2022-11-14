@@ -12,6 +12,7 @@
 8. [Kafka filter](#kafka-filter)
 9. [Kafka custom messages](#kafka-custom-messages)
 10. [Kafka streams](#kafka-streams)
+11. [Kafka testing](#Kafka-testing)
 
 ## Qué es kafka training
 
@@ -76,3 +77,8 @@ y consumidor
 
 Generamos un stream que lea del topic test-topic, separe las palabras y cuente las que son iguales. La salida la dejará en el topic
 output-stream-topic. Ponemos un endpoint para recuperar el número de palabras actual que hay guardado en la tabla materializada
+
+## Kafka testing
+
+En el directorio de test hay test unitarios y test de integración con kafka containers
+Para poder ejecutar los test de containers se necesita tener levantado docker en el sistema operativo

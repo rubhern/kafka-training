@@ -1,6 +1,5 @@
 package com.kafka.Kafka.training.streams.testContainer;
 
-import com.kafka.Kafka.training.KafkaTrainingApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -15,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
@@ -34,13 +34,13 @@ import static org.testcontainers.shaded.org.hamcrest.Matchers.containsString;
 
 @Testcontainers
 @Import(KafkaTestContainersLiveTest.KafkaTestContainersConfiguration.class)
-@SpringBootTest(classes = KafkaTrainingApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = KafkaTestContainersLiveTest.class)
 @Slf4j
 public class KafkaTestContainersLiveTest {
 
     @Container
     private static final KafkaContainer kafka = new KafkaContainer(
-            DockerImageName.parse("confluentinc/cp-kafka:5.4.3"));
+            DockerImageName.parse("confluentinc/cp-kafka:latest"));
 
     @Autowired
     public KafkaTemplate<String, String> testContainerKafkaTemplate;
@@ -86,6 +86,7 @@ public class KafkaTestContainersLiveTest {
     }
 
     @TestConfiguration
+    @EnableKafka
     static class KafkaTestContainersConfiguration {
 
         @Bean
