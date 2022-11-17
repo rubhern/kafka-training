@@ -2,7 +2,7 @@ package com.kafka.Kafka.training.schema_registry;
 
 
 import com.kafka.Kafka.training.Utils;
-import com.kafka.schema.UserSchemaRegistryDto;
+import io.confluent.kafka.schemaregistry.ParsedSchema.UserSchemaRegistryDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;

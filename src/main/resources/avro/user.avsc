@@ -1,5 +1,5 @@
 {
-  "namespace": "com.kafka.schema",
+  "namespace": "io.confluent.kafka.schemaregistry.ParsedSchema",
   "type": "record",
   "name": "UserSchemaRegistryDto",
   "fields": [
