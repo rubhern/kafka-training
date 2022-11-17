@@ -1,7 +1,5 @@
 package com.kafka.Kafka.training.streams;
 
-import io.confluent.kafka.schemaregistry.ParsedSchema.UserSchemaRegistryDto;
-import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
@@ -21,9 +19,9 @@ public class UsersNameProcessor {
     @Autowired
     void buildPipeline(StreamsBuilder streamsBuilder) {
         KStream<String, String> messageStream = streamsBuilder
-                .stream("user-topic", Consumed.with(STRING_SERDE, new SpecificAvroSerde<UserSchemaRegistryDto>()))
+                .stream("user-topic", Consumed.with(STRING_SERDE, STRING_SERDE))
                 .peek((key, value) -> log.info("Received message: {}", value))
-                .map((key, value) -> KeyValue.pair(key, value.getName() + " " + value.getSurname()))
+                .map((key, value) -> KeyValue.pair(key, value))
                 .peek((key, value) -> log.info("Mapped message: {}", value));
         messageStream.to("output-user-complete-name");
     }
